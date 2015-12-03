@@ -1,2 +1,17 @@
-100000 messages sent after 8.034838527s //4 klastry
-100000 messages sent after 8.682386587s //4 klastry
+100000 messages sent after 8.034838527s //4 klastry, 1 sender
+100000 messages sent after 8.682386587s //4 klastry, 1 sender
+100000 messages sent after 8.817269201s //20 klastrow, 1 sender
+100000 messages sent after 13.923160948s //2 klastry, 2 sendery, no1
+100000 messages sent after 12.403841493s //2 klastry, 2 sendery, no2
+100000 messages sent after 17.526469461s //2 klastry, 2 sendery, no1
+100000 messages sent after 16.677858774s //2 klastry, 2 sendery, no2
+100000 messages sent after 23.148133552s //2 klastry, 3 sendery, no1
+100000 messages sent after 26.013770528s //2 klastry, 3 sendery, no2
+100000 messages sent after 22.305296629s //2 klastry, 3 sendery, no3
+100000 messages sent after 27.539274882s //8 klastrow, 5 sendery, no1
+100000 messages sent after 30.716179245s //8 klastrow, 5 sendery, no2
+100000 messages sent after 34.886387688s //8 klastrow, 5 sendery, no3
+100000 messages sent after 32.198270972s //8 klastrow, 5 sendery, no4
+100000 messages sent after 26.331716563s //8 klastrow, 5 sendery, no5
+Thread no1 100000 messages sent after 21.017797135s
+Thread no0 100000 messages sent after 21.230260551s
