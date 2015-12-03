@@ -1,5 +1,8 @@
 import com.rabbitmq.client.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Receiver {
@@ -22,12 +25,34 @@ public class Receiver {
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
                 String message = new String(body, "UTF-8");
-                if(++count % 10000 == 0)
-                    System.out.println(count + " messages received after" + ((System.nanoTime() - startTime/1000000000.0)));
-                if(!isFirstReceived) startTime = System.nanoTime();
-//                System.out.println(" [x] Received '" + message + "'");
+                if(!isFirstReceived){
+                    isFirstReceived=true;
+                    startTime = System.nanoTime();
+                }
+                if(++count % 10000 == 0) {
+                    String report = count + " messages received after " + ((System.nanoTime() - startTime) / 1000000000.0) + " s";
+                    System.out.println(report);
+                    writeReport(report);
+                }
             }
         };
         channel.basicConsume(QUEUE_NAME, true, consumer);
+    }
+
+    private static void writeReport(String report){
+        try {
+            File file = new File("receiver_report.txt");
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(report + "\n");
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
