@@ -5,7 +5,9 @@ import java.io.IOException;
 public class Receiver {
 
     private final static String QUEUE_NAME = "hello";
-
+    static boolean isFirstReceived = false;
+    static long startTime;
+    static int count  = 0;
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
@@ -20,6 +22,9 @@ public class Receiver {
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
                 String message = new String(body, "UTF-8");
+                if(++count % 10 == 0)
+                    System.out.println(count + " messages received after" + ((double)(System.nanoTime() - startTime)/1000000000.0));
+                if(!isFirstReceived) startTime = System.nanoTime();
                 System.out.println(" [x] Received '" + message + "'");
             }
         };
