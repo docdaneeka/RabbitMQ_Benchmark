@@ -16,7 +16,7 @@ public class Sender {
         Channel channel = connection.createChannel();
 
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-        for(int i=0;i<1000;i++) {
+        for(int i=0;i<10000000;i++) {
             String message = "Message number : " + ++count;
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
         }

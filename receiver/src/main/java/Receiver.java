@@ -22,10 +22,10 @@ public class Receiver {
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
                 String message = new String(body, "UTF-8");
-                if(++count % 10 == 0)
-                    System.out.println(count + " messages received after" + ((double)(System.nanoTime() - startTime)/1000000000.0));
+                if(++count % 10000 == 0)
+                    System.out.println(count + " messages received after" + ((System.nanoTime() - startTime/1000000000.0)));
                 if(!isFirstReceived) startTime = System.nanoTime();
-                System.out.println(" [x] Received '" + message + "'");
+//                System.out.println(" [x] Received '" + message + "'");
             }
         };
         channel.basicConsume(QUEUE_NAME, true, consumer);
