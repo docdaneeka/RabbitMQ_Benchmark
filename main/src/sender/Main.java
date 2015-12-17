@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class Main {
 
     public final static String QUEUE_NAME = "hello";
-    public static int count = 100000;
-    private static final int threads = 2;
+    public static int count = 10000;
+    private static final int threads = 4;
     private static ArrayList<Sender> threadList;
 
     public static void main(String[] args) {
 
-        String message = createDataSize(24);
+        String message = createDataSize(1024);
         threadList = new ArrayList<Sender>();
 
         for(int i=0; i<threads; i++){

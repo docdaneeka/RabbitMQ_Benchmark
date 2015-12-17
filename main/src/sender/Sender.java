@@ -39,7 +39,8 @@ public class Sender implements Runnable{
     @Override
     public void run() {
         startTime = System.nanoTime();
-        for(int i=0;i<Main.count;i++) {
+        if(main.Main.time==null) main.Main.time = System.nanoTime();
+        for(int i=0;i<main.Main.messagesCount;i++) {
             try {
                 main.Main.timing.put(message,System.nanoTime());
                 channel.basicPublish("", Main.QUEUE_NAME, null, message.getBytes());
@@ -57,8 +58,9 @@ public class Sender implements Runnable{
             e.printStackTrace();
         }
 
-        String report = "Thread no" + no + " " + Main.count + " messages sent after " + ((System.nanoTime() - startTime)/1000000000.0) + "s";
-        System.out.println(report);
-        Main.writeReport(report);
+//        String report = "Thread no" + no + " " + main.Main.messagesCount + " messages sent " +
+//                "after " + ((System.nanoTime() - startTime)/1000000000.0) + "s";
+//        System.out.println(report);
+//        Main.writeReport(report);
     }
 }

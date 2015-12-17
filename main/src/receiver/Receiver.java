@@ -1,6 +1,7 @@
 package receiver;
 
 import com.rabbitmq.client.*;
+import main.Main;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,8 +47,13 @@ public class Receiver implements Runnable{
 
             Consumer consumer = new DefaultConsumer(channel) {
                 @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+                public void handleDelivery(
+                        String consumerTag,
+                        Envelope envelope,
+                        AMQP.BasicProperties properties,
+                        byte[] body)
                         throws IOException {
+
                     String message = new String(body, "UTF-8");
                     Long time = System.nanoTime() - main.Main.timing.get(message);
                     //TODO wykorzystac to
@@ -55,8 +61,16 @@ public class Receiver implements Runnable{
                         isFirstReceived=true;
                         startTime = System.nanoTime();
                     }
-                    if(++count % 10000 == 0) {
-                        String report = count + " messages received after " + ((System.nanoTime() - startTime) / 1000000000.0) + " s";
+//                    if(++count % main.Main.messagesCount == 0) {
+//                        String report = count + " messages received " +
+//                                "after " + ((System.nanoTime() - startTime) / 1000000000.0) + " s";
+//                        System.out.println(report);
+//                        writeReport(report);
+//                    }
+
+                    if(++count == Main.messagesCount*Main.instancesCount) {
+                        String report = count + " messages received " +
+                                "after " + ((System.nanoTime() - Main.time) / 1000000000.0) + " s";
                         System.out.println(report);
                         writeReport(report);
                     }
@@ -68,9 +82,5 @@ public class Receiver implements Runnable{
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
-
-
-
-
     }
 }
