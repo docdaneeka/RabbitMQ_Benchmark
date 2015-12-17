@@ -1,3 +1,5 @@
+package sender;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,12 +23,12 @@ public class Main {
             threadList.add(sender);
         }
 
-        for(Sender sender : threadList){
-            sender.start();
-        }
+//        for(Sender sender : threadList){
+//            sender.start();
+//        }
     }
 
-    private static String createDataSize(int msgSize) {
+    public static String createDataSize(int msgSize) {
         msgSize = msgSize/2;
         msgSize = msgSize * 1024;
         StringBuilder sb = new StringBuilder(msgSize);

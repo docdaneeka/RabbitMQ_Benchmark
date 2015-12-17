@@ -1,3 +1,5 @@
+package sender;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -8,7 +10,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by alex on 03.12.15.
  */
-public class Sender extends Thread{
+public class Sender implements Runnable{
 
     private ConnectionFactory factory;
     private Connection connection;
@@ -39,6 +41,7 @@ public class Sender extends Thread{
         startTime = System.nanoTime();
         for(int i=0;i<Main.count;i++) {
             try {
+                main.Main.timing.put(message,System.nanoTime());
                 channel.basicPublish("", Main.QUEUE_NAME, null, message.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
