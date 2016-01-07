@@ -5,6 +5,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -28,7 +30,9 @@ public class Sender implements Runnable{
         try {
             connection = factory.newConnection();
             channel = connection.createChannel();
-            channel.queueDeclare(Main.QUEUE_NAME, false, false, false, null);
+            Map args = new HashMap();
+            args.put("x-ha-policy", "all");
+            channel.queueDeclare(Main.QUEUE_NAME, false, false, false, args);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {

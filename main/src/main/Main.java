@@ -18,7 +18,7 @@ public class Main {
     public static final int instancesCount = 2;
 
 
-    public static final int messagesCount = 10000;
+    public static final int messagesCount = 20000;
     public static final int totalMessagesCount = instancesCount * messagesCount;
     public static volatile int totalMessageReveived = 0;
     private static final int size = 24;
@@ -37,9 +37,9 @@ public class Main {
                     }
                     System.out.println(totalMessageReveived - totalMessageReveivedTmp + " msgs/s");
                     totalMessageReveivedTmp = totalMessageReveived;
-                    if ((System.nanoTime() - Main.time) / 1000000000.0 >= 6.0) {
+                    if ((System.nanoTime() - Main.time) / 1000000000.0 >= 20.0) {
                         System.out.println(totalMessageReveived + " msgs received");
-                        System.out.println(totalMessageReveived / totalMessagesCount * 100 + "%");
+                        System.out.println((totalMessageReveived / totalMessagesCount) * 100 + "%");
                         break;
                     }
                 }
@@ -47,8 +47,13 @@ public class Main {
         });
         timer.start();
 
-        Thread receiverThread = new Thread(new Receiver());
-        receiverThread.start();
+        Thread receiverThread1 = new Thread(new Receiver());
+        receiverThread1.start();
+        Thread receiverThread2 = new Thread(new Receiver());
+        receiverThread2.start();
+        Thread receiverThread3 = new Thread(new Receiver());
+        receiverThread3.start();
+
         String message = sender.Main.createDataSize(size);
         for(int i=0; i<instancesCount; i++){
             service.submit(new Sender(i,message));
