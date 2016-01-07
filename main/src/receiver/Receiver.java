@@ -68,12 +68,15 @@ public class Receiver implements Runnable{
 //                        writeReport(report);
 //                    }
 
+                    Main.totalMessageReveived++;
+
                     if(++count == Main.messagesCount*Main.instancesCount) {
                         String report = count + " messages received " +
                                 "after " + ((System.nanoTime() - Main.time) / 1000000000.0) + " s";
-                        System.out.println(report);
+//                        System.out.println(report);
                         writeReport(report);
                     }
+
                 }
             };
             channel.basicConsume(QUEUE_NAME, true, consumer);
