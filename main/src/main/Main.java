@@ -19,6 +19,8 @@ public class Main {
 
 
     public static final int messagesCount = 10000;
+    public static final int totalMessagesCount = instancesCount*messagesCount;
+    public static  volatile int totalMessagesReceived = 0;
     private static final int size = 24;
     public static void main(String[] args) {
 
@@ -28,5 +30,7 @@ public class Main {
         for(int i=0; i<instancesCount; i++){
             service.submit(new Sender(i,message));
         }
+        while(!service.isShutdown());
+        System.out.println(totalMessagesReceived/totalMessagesCount * 100 + "%.");
     }
 }

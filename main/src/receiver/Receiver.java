@@ -72,6 +72,7 @@ public class Receiver implements Runnable{
                         String report = count + " messages received " +
                                 "after " + ((System.nanoTime() - Main.time) / 1000000000.0) + " s";
                         System.out.println(report);
+                        Main.totalMessagesReceived += count;
                         writeReport(report);
                     }
                 }
