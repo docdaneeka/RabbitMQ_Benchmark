@@ -15,7 +15,11 @@ public class Receiver implements Runnable{
     static boolean isFirstReceived = false;
     static long startTime;
     static int count  = 0;
+    private int no;
 
+    public Receiver(int no){
+        this.no = no;
+    }
 
     private static void writeReport(String report){
         try {
@@ -61,21 +65,17 @@ public class Receiver implements Runnable{
                         isFirstReceived=true;
                         startTime = System.nanoTime();
                     }
-//                    if(++count % main.Main.messagesCount == 0) {
+
+//                    Main.totalMessageReveived++;
+                    Main.increaseRcvdMsg();
+                    Main.totalMessageReveivedPerRec[no]++;
+
+//                    if(++count == Main.messagesCount*Main.senderInstancesCount) {
 //                        String report = count + " messages received " +
-//                                "after " + ((System.nanoTime() - startTime) / 1000000000.0) + " s";
+//                                "after " + ((System.nanoTime() - Main.time) / 1000000000.0) + " s";
 //                        System.out.println(report);
 //                        writeReport(report);
 //                    }
-
-                    Main.totalMessageReveived++;
-
-                    if(++count == Main.messagesCount*Main.instancesCount) {
-                        String report = count + " messages received " +
-                                "after " + ((System.nanoTime() - Main.time) / 1000000000.0) + " s";
-//                        System.out.println(report);
-                        writeReport(report);
-                    }
 
                 }
             };

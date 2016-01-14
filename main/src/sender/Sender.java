@@ -31,7 +31,7 @@ public class Sender implements Runnable{
             connection = factory.newConnection();
             channel = connection.createChannel();
             Map args = new HashMap();
-            args.put("x-ha-policy", "all");
+//            args.put("x-ha-policy", "all");
             channel.queueDeclare(Main.QUEUE_NAME, false, false, false, args);
         } catch (IOException e) {
             e.printStackTrace();

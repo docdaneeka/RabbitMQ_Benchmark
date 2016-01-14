@@ -15,14 +15,17 @@ public class Main {
     public static Map<String, Long> timing = new ConcurrentHashMap<>();
     public static volatile Long time = System.nanoTime();
     private static ExecutorService service = Executors.newCachedThreadPool();
-    public static final int instancesCount = 2;
+    public static final int senderInstancesCount = 2;
+    public static final int receiverInstancesCount = 8;
 
-
-    public static final int messagesCount = 20000;
-    public static final int totalMessagesCount = instancesCount * messagesCount;
+    public static final int messagesCount = 60000;
+    public static final int totalMessagesCount = senderInstancesCount * messagesCount;
     public static volatile int totalMessageReveived = 0;
+    public static volatile int[] totalMessageReveivedPerRec;
     private static final int size = 24;
     public static void main(String[] args) {
+
+        totalMessageReveivedPerRec = new int[8];
 
         Thread timer = new Thread(new Runnable(){
 
@@ -37,9 +40,12 @@ public class Main {
                     }
                     System.out.println(totalMessageReveived - totalMessageReveivedTmp + " msgs/s");
                     totalMessageReveivedTmp = totalMessageReveived;
-                    if ((System.nanoTime() - Main.time) / 1000000000.0 >= 20.0) {
+                    if ((System.nanoTime() - Main.time) / 1000000000.0 >= 30.0) {
                         System.out.println(totalMessageReveived + " msgs received");
                         System.out.println((totalMessageReveived / totalMessagesCount) * 100 + "%");
+                        for(int i=0; i< receiverInstancesCount; i++){
+                            System.out.println("Rec no." + i + ": " + totalMessageReveivedPerRec[i] + " msgs received");
+                        }
                         break;
                     }
                 }
@@ -47,17 +53,18 @@ public class Main {
         });
         timer.start();
 
-        Thread receiverThread1 = new Thread(new Receiver());
-        receiverThread1.start();
-        Thread receiverThread2 = new Thread(new Receiver());
-        receiverThread2.start();
-        Thread receiverThread3 = new Thread(new Receiver());
-        receiverThread3.start();
+        for(int i=0; i< receiverInstancesCount; i++){
+            service.submit(new Receiver(i));
+        }
 
         String message = sender.Main.createDataSize(size);
-        for(int i=0; i<instancesCount; i++){
+        for(int i=0; i< senderInstancesCount; i++){
             service.submit(new Sender(i,message));
         }
 
+    }
+
+    public static synchronized void increaseRcvdMsg(){
+        totalMessageReveived++;
     }
 }
